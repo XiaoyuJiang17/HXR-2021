@@ -31,3 +31,38 @@ weakness:
 output = K.max(K.dot(X, self.W) + self.b, axis=1)
 从上面的激活函数公式中可以看出，每个神经元中有两组(w,b)参数，那么参数量就增加了一倍，这就导致了整体参数的数量激增。
 Maxout网络存在的最大的一个问题是，网络的参数是传统网络的 [公式] 倍， [公式] 倍的参数数量并没有带来其等价的精度提升，现基本已被工业界淘汰
+
+
+#存储数据代码,保存结果，输出到table上
+
+val_acc_dropout_1 = stats_list_dropout[0][1:,keys_list_dropout[0][['acc(valid)']][-1]
+val_acc_dropout_2 = stats_list_dropout[1][1:,keys_list_dropout[1][['acc(valid)']][-1]
+val_acc_dropout_3 = stats_list_dropout[2][1:,keys_list_dropout[2][['acc(valid)']][-1]
+val_acc_dropout_4 = stats_list_dropout[3][1:,keys_list_dropout[3][['acc(valid)']][-1]
+val_acc_dropout_5 = stats_list_dropout[4][1:,keys_list_dropout[4][['acc(valid)']][-1]
+
+
+
+generalization_gap_dropout_1 = stats_list_dropout[0][1:,keys_list_dropout[0][['error(valid)']][-1]
+generalization_gap_dropout_2 = stats_list_dropout[1][1:,keys_list_dropout[1][['error(valid)']][-1]
+generalization_gap_dropout_3 = stats_list_dropout[2][1:,keys_list_dropout[2][['error(valid)']][-1]
+generalization_gap_dropout_4 = stats_list_dropout[3][1:,keys_list_dropout[3][['error(valid)']][-1]
+generalization_gap_dropout_5 = stats_list_dropout[4][1:,keys_list_dropout[4][['error(valid)']][-1]
+
+
+print('val_acc_dropout_1',val_acc_dropout_1)
+print('val_acc_dropout_2',val_acc_dropout_2)
+
+print('generalization_gap_dropout_1',generalization_gap_dropout_1)
+print('generalization_gap_dropout_2',generalization_gap_dropout_2)
+
+
+
+
+
+
+
+
+
+
+
