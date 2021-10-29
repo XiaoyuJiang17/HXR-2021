@@ -11,7 +11,36 @@ meanhile,i have set up a gobal varible is sample,which appear several times at t
 将非标准XML文件变为XML文件。实质是在文件头和尾加入 XML DOM 节点,def xml_sample 读取指定的 XML 文件，并返回它的根节点。
 def xml_all_text 提取所有词干。
 sample 和 trec 的唯一区别是，sample 只有 text 属性，而 trec 有 headline 和 text 属性，从 trec 提取需要将 headline 和 text 合并
-for token
+
+for token section:
+def tokenisation_text 寻找文本中的特征标记,
+del_punc = '\W' # 此符号代表匹配包括下划线、大小写字母和阿拉伯数字。
+    text_nopunc = re.sub(del_punc,' ',text) # 把所有下划线、大小写字母和阿拉伯数字替换为空格。
+    with open('a.txt','w+') as f1: # 替换后写入文件
+        f1.write(text_nopunc)
+    tokenisation_list = text_nopunc.split() # 去掉了下划线、大小写字母和阿拉伯数字的剩余字符都视作特征标记。
+def lower_word(word_list):
+    """
+    全部转小写
+    :param word_list:
+    :return:
+    """
+    return [current_word.lower() for current_word in word_list]
+
+def token_lower_nostop_stem_list(all_text, stopword_list):
+    """
+    从完整文本中抽取所有非停词词干。
+    :param all_text:
+    :param stopword_list:
+    :return:
+    """
+    token_list = tokenisation_text(all_text) # 寻找文本中的特征字符，即去掉所有下划线、大小写字母和阿拉伯数字后的列表。
+    token_lowerlist = lower_word(token_list) # 全部转小写。
+    token_lowerlist_nostop = [str(current_word) for current_word in token_lowerlist if str(current_word) not in stopword_list] # 选取所有非停词
+    stem_list = [stem(current_word) for current_word in token_lowerlist_nostop] # 根据所有非停词计算词干。如果单词长度小于等于2，则返回本身，否则返回单词的原始形态。
+
+    return stem_list
+
 
 
 
@@ -34,4 +63,24 @@ for token
 值得一提的是，这两种类型查询中的每个术语都需要转换为小写形式。
 然后使用小写形式获取词干形式。因为这是我对集合所做的。查询术语需要进行相同的预处理。
 最后将查询结果以所需格式输出到不同的文件中，函数名为output_query（），如附录所示。
+
+tfidf
+   计算所有词的 TF_IDF 权重，并按从大到小排序。
+    Term Frequency(TF) = 1 + lg (某个词出现的数量 / 总词数)
+    Inverse Document Frequency(IDF) = lg(总文件数 / 出现某个词的文件)
+    权重 = TF * IDF
+    :param current_inverted_dic:
+    :param query_phrase:
+    :param is_stop:
+    :param stop_word_path:
+    :return:
+    """
+    
+    Query
+    define a line, to judge the number of lines > 150
+    
+    
+    
+
+
 
