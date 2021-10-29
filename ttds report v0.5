@@ -1,55 +1,35 @@
-给定一个集合（.xml文件），该文件将转换为具有第一行的xml版本标记。
+preprocessing:
 
-然后，将名为“Sample”的父标记添加到第二行（也将“/Sample”标记添加到最后一行）。
-标准xml文件是使用带有“standard_3;”前缀的原始xml文件名保存的。这里，xml.etree.ElementTree用于解析xml文件，词干分析用于获取每个令牌的词干。
-对于集合中的每个文档，我只需使用“+”将标题添加到文档文本的后面。我使用正则表达式和re.sub将“&amp;amp”替换为“”，然后将非单词字符替换为“”。
-需要注意的是，不能删除“_”。所有文本都转换成小写。然后对修改后的文本应用split（）以获取所有标记。处理停止字列表中出现的所有标记。
-在上述所有过程之后，使用词干分析来获取每个令牌的词干。
+First step,I implement tokenisation, stopword removing and stemming in order. 其实他们之间是相关关联并互相作用于各自的，
 
-meanhile,i have set up a gobal varible is sample,which appear several times at the code,so it may let my code more clearly and easy to change.  
+比如tokenisation:寻找文本中的特征标记,通过特殊字符匹配包括下划线、大小写字母和阿拉伯数字，并将其替换为空格后写入文件，因此去掉了下划线、大小写字母和阿拉伯数字的剩余字符都视作特征标记，然后将其转为小写，并从完整文本中抽取所有非停词词干， 寻找文本中的特征字符，即去掉所有下划线、大小写字母和阿拉伯数字后的列表。全部转小写。选取所有非停词后根据所有非停词计算词干。如果单词长度小于等于2，则返回本身，否则返回单词的原始形态，最后返回stem_list.
 
-将非标准XML文件变为XML文件。实质是在文件头和尾加入 XML DOM 节点,def xml_sample 读取指定的 XML 文件，并返回它的根节点。
+XML:
+
+meanhile,i have set up a gobal varible is sample = false =, 方便切换测试集， which appear several times at my code,so it may let my code more clearly and easy to change.  
+将非标准XML文件变为XML文件。实质是在文件头和尾加入 XML DOM 节点,通过def xml_sample 读取指定的 XML 文件，并返回它的根节点。
 def xml_all_text 提取所有词干。
-sample 和 trec 的唯一区别是，sample 只有 text 属性，而 trec 有 headline 和 text 属性，从 trec 提取需要将 headline 和 text 合并
+sample 和 trec 的唯一区别是，sample 只有 text 属性，而 trec 有 headline 和 text 属性，从 trec 提取需要将 headline 和 text 合并。需要注意的是，不能删除“_”。所有文本都转换成小写。然后对修改后的文本应用split（）以获取所有标记。处理停止字列表中出现的所有标记。
+在上述所有过程之后，使用词干分析来获取每个令牌的词干
 
-for token section:
-def tokenisation_text 寻找文本中的特征标记,
-del_punc = '\W' # 此符号代表匹配包括下划线、大小写字母和阿拉伯数字。
-    text_nopunc = re.sub(del_punc,' ',text) # 把所有下划线、大小写字母和阿拉伯数字替换为空格。
-    with open('a.txt','w+') as f1: # 替换后写入文件
-        f1.write(text_nopunc)
-    tokenisation_list = text_nopunc.split() # 去掉了下划线、大小写字母和阿拉伯数字的剩余字符都视作特征标记。
-def lower_word(word_list):
-    """
-    全部转小写
-    :param word_list:
-    :return:
-    """
-    return [current_word.lower() for current_word in word_list]
-
-def token_lower_nostop_stem_list(all_text, stopword_list):
-    """
-    从完整文本中抽取所有非停词词干。
-    :param all_text:
-    :param stopword_list:
-    :return:
-    """
-    token_list = tokenisation_text(all_text) # 寻找文本中的特征字符，即去掉所有下划线、大小写字母和阿拉伯数字后的列表。
-    token_lowerlist = lower_word(token_list) # 全部转小写。
-    token_lowerlist_nostop = [str(current_word) for current_word in token_lowerlist if str(current_word) not in stopword_list] # 选取所有非停词
-    stem_list = [stem(current_word) for current_word in token_lowerlist_nostop] # 根据所有非停词计算词干。如果单词长度小于等于2，则返回本身，否则返回单词的原始形态。
-
-    return stem_list
 
 
 
 
 3倒排索引
-我使用字典来存储所有的倒排索引，其键是词干，其值也以字典的形式表示位置列表和文档id。
+
+
+The key of the dictionary is the term after pre-processing. And the value of the dictionary is a dictionary with the document number as the key and the position
+which the term appears as the value. It may not be the fastest way for storing the positional inverted index, but it’s easy to implement.
+
+我使用celementtree将标题和文本从XML解析到列表中。然后将反向索引存储到一个叫做术语dic的字典字典中。字典的关键字是预处理后的术语。字典的值是一个字典，文档编号为键，术语出现的位置是值。它可能不是存储位置反向索引的最快方法，但它很容易实现。
+
 它只需要对所有经过预处理的文本进行一次迭代。每次，将当前词干的位置附加到索引字典。因为预处理的文本存储在元组列表中。
 因此，当我迭代每个stem时，很容易获得文档id stem和词干位置（在Python中使用列表索引）。
-即使我在for循环中使用append（），构建整个反向索引（给定预处理文本）也几乎需要几秒钟.
-然后，我使用Python内置函数file write以所需格式将反向索引字典输出到index.txt。索引后，每次搜索时，我只需要从index.txt加载索引。
+即使我在for循环中使用append（）,然后使用Python内置函数file write以所需格式将反向索引字典输出到index.txt。索引后，每次搜索时，只需要从index.txt加载索引。
+
+Query部分
+
 在本课程中，只给出了两种类型的搜索，布尔搜索和分级检索。因此，我编写代码以通过文件名来区分搜索类型，使用split（'..'）[1]来获取类型。布尔搜索比其他搜索稍微复杂一些。
 首先，我为单个术语或短语查询创建了几个函数。也就是说，将查询拆分为“AND”或“or”，然后使用这些函数执行单个查询。在获得单个查询结果后，决定是否需要将其与文档id集之间的差异集（不包含则是必要的）。然后使用并集或交集合并单个查询结果。如果查询中没有“AND”或“or”，只需按以下步骤执行单个查询
 提及（还需要检查术语是否包含“NOT”前缀）。
@@ -67,20 +47,20 @@ def token_lower_nostop_stem_list(all_text, stopword_list):
 tfidf
    计算所有词的 TF_IDF 权重，并按从大到小排序。
     Term Frequency(TF) = 1 + lg (某个词出现的数量 / 总词数)
-    Inverse Document Frequency(IDF) = lg(总文件数 / 出现某个词的文件)
-    权重 = TF * IDF
-    :param current_inverted_dic:
-    :param query_phrase:
-    :param is_stop:
-    :param stop_word_path:
-    :return:
-    """
-    
+    Inverse Document Frequency(IDF) = lg(总文件数 / 出现某个词的文件 
     Query
     define a line, to judge the number of lines > 150
     
     
     
+    感想：
+    This coursework is just a rough implementation of simple query of IR but I’ve learnt a lot from it. The implementation of each part is not very complicated but we have to take efficiency and effectiveness into consideration. After many times of debugging, I have a clear idea of where the bugs are most likely
+to appear, which is a valuable experience for future work. Also, I’ve practiced the essential programming skills in Python and gotten to learn some knowledge
+about algorithms and data structures. When building the system, many advanced topics come to my mind: what if two or more “and” and “or” appears in
+the query? What if the proximity search contains more than two terms? How to measure whether the user likes the result? I find these topics really interesting
+and I’m eager to go deeper on them later on.
+
+
 
 
 
