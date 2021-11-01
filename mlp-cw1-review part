@@ -57,6 +57,63 @@ print('generalization_gap_dropout_1',generalization_gap_dropout_1)
 print('generalization_gap_dropout_2',generalization_gap_dropout_2)
 
 
+CW-Question
+Q1: the neural network is so flexible that fit very closely to training data（特别是学习到了噪声和异常数据）.but perform bad on test data.
+
+Q2: the problem of overfitting will be more serious.
+
+Q3: both approaches have significant contribution in releasing the severity of overfitting problems, and the combination of L1 and dropout gives the best performance.
+
+Q4: overfitting is a pervasive issue exists in models with various width and depth, but various approaches have been showed effectiveness, such as dropout, L1/L2 regularization and Maxout.
+
+Q5: the model has great performance on training dataset, while badly performed on unseen test dataset, which means the model is overtraining, fitted too closely to training dataset.
+
+Q6: Overfitting occurs when our model is too flexible and the training dataset is relatively small, thus the model learned too many unnecessary details during training. One can identify this happen when comparing its performance on training and test dataset. One important sign of overfitting is the model performance on training dataset is much better than on test dataset.
+
+Q7: the accuracy on both training and validation datasets are increasing during first 10 epochs, while after that, model accuracy continues increasing on training set but starts decreasing on validation set. Finally, after 100 epochs, there are a huge gap between accuracy on training and validation set, which are around 0.94 and 0.81 respectively. Similar trend can also be seen on figure 1b with cross-entropy error as the indicator. The tuning point is still at about 10th epoch, and training error decreases continuously to less than 0.2 while validation error begin to take off, reaching 1.2 after 100 epochs.  
+
+Q8:  for all three settings, the models perform much better on training set than validation set, in terms of both accuracy and generalization gap, which indicating all three models face serious overfitting problems. In addition, we observe that 128 neurons model having best performance in training set but worst in validation set, which means its overfitting issue is the most, while gap between performance with 32 neurons model is the smallest, meaning its overfitting problem is less severe. Generally, we find overfitting become increasingly serious as number of neurons increase. 
+
+Q9: From our observation above, we find the width affects the performance results in a consistent way. This is as what we expected from the model flexibility point of view. The model with more neurons has larger flexibility, which is prone to become overfitting.
+
+Q10: all models with three different depth are overfitted. Increasing the number of layers will lead to severer overfitting. The 3 hidden layers model has largest validation error and one of the lowest validation accuracies, while this is just contrary on training set,indicating this is the most overfitted model. The 1 hidden layer has less serious overfitting and much smaller gap in terms of training and validation performance.
+
+Q11: From our observation above, we also find the depth affects the performance results in a consistent way which is similar to the width. This is also explainable by analyzing model flexibility. The model with more hidden layers definitely has more neurons, resulting larger complexity and flexibility, 
+
+Q12: From experiments above, we find that increasing width or depth of neuron network both get model performance improved on training set but decreased on validation set. They both lead to overfitting. This can be understood because increasing both width and depth will lead to increase of model complexity(flexibility), resulting to overfitting. 
+
+Q13: A regression model that uses L1 regularization technique is called Lasso Regression and model which uses L2 is called Ridge Regression. Lasso Regression (Least Absolute Shrinkage and Selection Operator) adds “absolute value of magnitude” of coefficient as penalty term to the loss function.Ridge regression adds “squared magnitude” of coefficient as penalty term to the loss function. Here the highlighted part represents L2 regularization element.
+The idea of L1/L2 regularization is adding a complexity term to error function, so that the network function gets smoother after training. L1 regularization corresponds to adding a term based on summing the absolute values of the weights to the error: 
+
+Similarly, L2 is defined as half of the sum of square of the weight. 
+ 
+In practice, these are hyperparameter beta needed, which controls the relative importance of complexity term and data term.
+Q14: Training error function with L1/L2 regularization term will discourage the model coefficients become huge which stops overfitting to training data. L1 and L2 regularization differ at several points: firstly, L1 and L2 have different rate of enforcing weights shrinking to zero. 
+Thus, Secondly, generally speaking, L1 has the property of shrinking some of weight to 0 while leaving a few large important weights 
+Here, if lambda is zero then you can imagine we get back OLS. However, if lambda is very large then it will add too much weight and it will lead to under-fitting. Having said that it’s important how lambda is chosen. This technique works very well to avoid over-fitting issue.
+
+Again, if lambda is zero then we will get back OLS whereas very large value will make coefficients zero hence it will under-fit
+
+The key difference between these techniques is that Lasso shrinks the less important feature’s coefficient to zero thus, removing some feature altogether. So, this works well for feature selection in case we have a huge number of features.
+
+Traditional methods like cross-validation, stepwise regression to handle overfitting and perform feature selection work well with a small set of features but these techniques are a great alternative when we are dealing with a large set of features.
+
+
+Q15:实验detail
+
+Q16. it has not previously been showed how model averaging in deep architectures performed. In addition, the author argued that instead of getting slight performance enhancement for applying Dropout to various models, its performance can be maximized when directly creating architectures suitable for utilizing dropout as model averaging technique. 
+
+Q17. Maxout model benefits most from dropout, and highly compatible with it as model averaging techniques. The combination of these two yields state of art performance on four benchmark datasets. The author argued that the first reason is that dropout encourages Maxout units to get larger linear region, making network to learn model averaging techniques more efficiently. Experiment results shows that the dropout is indeed doing model averaging as expected with the assistance of Maxout, and performed better than using Tanh activation. Secondly, maxout also improves dropout during training phrase. The author demonstrated that maxout model is easier to optimize than Relu when with dropout.
+
+Q18. The general performance of proposed Maxout model is evaluated on four benchmark datasets, detailed settings including hyperparameter, training epochs are also given. In each dataset, designed model with maxout layers is tested, which obtains the best result compared to other state of art methods. Generally, the experiments on four benchmark datasets provide convincing evidence for the effectiveness of maxout network.
+
+Q19
+In this report, we explore the overfifitting problem of neural networks in depth. We fifind that the generalization ability of the model decreases, i.e., overfifitting, caused by less data, too many features, and repeated training. We obtained that 
+increasing the number of hidden units and increasing the number of layers deepens the overfifitting degree. Therefore, we used Dropout and Regularization methods to improve the network architecture. These methods led to a reduction in the number of hidden features during training, but the training effect and accuracy did not change much. We also explored the combination of optimization methods and the effect of different hyperparameters on the overfifitting optimization. Finally, we observe the test performance of the best model which is with "dropout+L2, Dropout probability=0.65, Penalty coeficient=1e-4 with 3 hidden layers and 128 hidden units with ReLU activationfunctions".
+
+Finally, we briefly review Maxout method, discuss its’ internal mechanism， strengths and weaknesses. After read this paper, a future research direction 未来方向猜测。
+
+
 
 
 
