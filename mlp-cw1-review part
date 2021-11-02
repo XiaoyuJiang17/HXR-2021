@@ -76,12 +76,9 @@ Q6: Overfitting occurs when our model is too flexible and the training dataset i
 thus the model learned too many unnecessary details during training. One can identify this happen when comparing its performance on training and test dataset. 
 One important sign of overfitting is the model performance on training dataset is much better than on test dataset.
 
-Q7: the accuracy on both training and validation datasets are increasing during first 10 epochs, 
-while after that, model accuracy continues increasing on training set but starts decreasing on validation set. 
-Finally, after 100 epochs, there are a huge gap between accuracy on training and validation set, which are around 0.94 and 0.81 respectively. 
-Similar trend can also be seen on figure 1b with cross-entropy error as the indicator. 
-The tuning point is still at about 10th epoch, 
-and training error decreases continuously to less than 0.2 while validation error begin to take off,reaching 1.2 after 100 epochs.  
+Q7: the model accuracy by epochs on both training and validation set is shown. 
+The accuracy on both training and validation datasets are increasing quickly during first 10 epochs, while after that, 
+model accuracy continues increasing on training set but starts slow decreasing on validation set and the generalization gap in terms of accuracy increases during this time. Finally, after 100 epochs, there are a huge gap between accuracy on training and validation set, which are around 0.94 and 0.81 respectively. In figure 1b, We have opposite trend with cross-entropy error as the indicator. The tuning point is still at about 10th epoch, both training error and validation error decrease in rapid pace during first 10 epochs. Training error decreases continuously, but with slower speed, to less than 0.2 while validation error begin to take off, reaching 1.2 after 100 epochs
 
 Q8:  for all three settings, the models perform much better on training set than validation set, 
 in terms of both accuracy and generalization gap, 
